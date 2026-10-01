@@ -1,0 +1,16 @@
+# Reproduction environment used for the released experiments (Python 3.12).
+# The torch wheel below targets CUDA 12.8.
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+accelerate==1.14.0
+datasets==3.6.0
+matplotlib==3.11.0
+numpy==1.26.4
+openai==2.43.0
+peft==0.19.1
+PyYAML==6.0.3
+relplot==1.0.3
+scikit-learn==1.9.0
+scipy==1.17.1
+torch==2.11.0+cu128
+transformers==4.57.6

@@ -1,0 +1,11 @@
+# Inputs for the hidden-state variance table in conset/latex.py.
+model_name: allenai/Olmo-3-1025-7B
+revisions: &eval [stage1-step566000, stage1-step707000, stage1-step1272000, stage1-step1413814]
+datasets:
+  - {dataset: triviaqa, beg: 5000, end: 9961}
+adapters:
+  - {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k, datasets: [triviaqa]}
+seeds: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+epoch: 1
+gen_config_name: beam
+batch_size: 1

@@ -1,0 +1,29 @@
+# Learned-confidence inference required for the Marin 8B tables.
+model_name: marin-community/marin-8b-base
+epoch: 1
+gen_config_name: beam
+batch_size: 32
+seeds: &seeds [17, 18, 19]
+datasets:
+  - {dataset: triviaqa, beg: 5000, end: 9961}
+  - {dataset: jeopardy, beg: 15000, end: 20000}
+  - {dataset: bioasq, beg: 0, end: 2719}
+train_revisions: &train [kestrel, ocelot, jellyfish]
+eval_revisions: &oracle [phoenix, starling, deeper-starling]
+adapters:
+  - &t1multi {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k, datasets: [triviaqa, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *t1multi, revisions: [jellyfish]}
+  - {<<: *t1multi, revisions: *oracle}
+  - {<<: *t1multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &t2multi {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k_ncand2, datasets: [triviaqa, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *t2multi, revisions: [jellyfish]}
+  - {<<: *t2multi, revisions: *oracle}
+  - {<<: *t2multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &j1multi {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k, datasets: [jeopardy, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *j1multi, revisions: [jellyfish]}
+  - {<<: *j1multi, revisions: *oracle}
+  - {<<: *j1multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &j2multi {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k_ncand2, datasets: [jeopardy, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *j2multi, revisions: [jellyfish]}
+  - {<<: *j2multi, revisions: *oracle}
+  - {<<: *j2multi, revisions: *oracle, use_ckpt_respective_predictor: true}

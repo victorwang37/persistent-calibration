@@ -1,0 +1,7 @@
+epoch: 1
+seeds: [17, 18, 19]
+gen_config_name: beam
+batch_size: 32
+datasets: [{dataset: triviaqa, beg: 5000, end: 9961}, {dataset: jeopardy, beg: 15000, end: 20000}]
+train_configs: ['lora_{dataset}_acc_lr2e-4_bs16_5k_ncand2']
+models: [{model_name: marin-community/marin-8b-base, train_revisions: [kestrel, ocelot, jellyfish], surrogate_revision: jellyfish, eval_revisions: [jellyfish, phoenix, starling, deeper-starling]}]

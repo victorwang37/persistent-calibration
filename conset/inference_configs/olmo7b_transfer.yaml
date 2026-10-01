@@ -1,0 +1,39 @@
+# Inputs for the two OLMo 7B full-AUC transfer matrices in conset/latex.py.
+model_name: allenai/Olmo-3-1025-7B
+epoch: 1
+gen_config_name: beam
+batch_size: 32
+seeds: [17]
+datasets:
+  - {dataset: triviaqa, beg: 5000, end: 9961}
+  - {dataset: jeopardy, beg: 15000, end: 20000}
+eval_revisions: &all [stage1-step141000, stage1-step283000, stage1-step424000, stage1-step566000, stage1-step707000, stage1-step1272000, stage1-step1413814]
+adapters:
+  # One ordinary n_cand=1 adapter per checkpoint.
+  - &tordinary {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k, datasets: [triviaqa], revisions: [stage1-step141000]}
+  - {<<: *tordinary, revisions: [stage1-step283000]}
+  - {<<: *tordinary, revisions: [stage1-step424000]}
+  - {<<: *tordinary, revisions: [stage1-step566000]}
+  - {<<: *tordinary, revisions: [stage1-step707000]}
+  - {<<: *tordinary, revisions: [stage1-step1272000]}
+  - {<<: *tordinary, revisions: [stage1-step1413814]}
+  - &jordinary {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k, datasets: [jeopardy], revisions: [stage1-step141000]}
+  - {<<: *jordinary, revisions: [stage1-step283000]}
+  - {<<: *jordinary, revisions: [stage1-step424000]}
+  - {<<: *jordinary, revisions: [stage1-step566000]}
+  - {<<: *jordinary, revisions: [stage1-step707000]}
+  - {<<: *jordinary, revisions: [stage1-step1272000]}
+  - {<<: *jordinary, revisions: [stage1-step1413814]}
+  # One randomized-label n_cand=2 adapter per adjacent checkpoint pair.
+  - &trandom {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k_ncand2_random, datasets: [triviaqa], revisions: [stage1-step141000, stage1-step283000]}
+  - {<<: *trandom, revisions: [stage1-step283000, stage1-step424000]}
+  - {<<: *trandom, revisions: [stage1-step424000, stage1-step566000]}
+  - {<<: *trandom, revisions: [stage1-step566000, stage1-step707000]}
+  - {<<: *trandom, revisions: [stage1-step707000, stage1-step1272000]}
+  - {<<: *trandom, revisions: [stage1-step1272000, stage1-step1413814]}
+  - &jrandom {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k_ncand2_random, datasets: [jeopardy], revisions: [stage1-step141000, stage1-step283000]}
+  - {<<: *jrandom, revisions: [stage1-step283000, stage1-step424000]}
+  - {<<: *jrandom, revisions: [stage1-step424000, stage1-step566000]}
+  - {<<: *jrandom, revisions: [stage1-step566000, stage1-step707000]}
+  - {<<: *jrandom, revisions: [stage1-step707000, stage1-step1272000]}
+  - {<<: *jrandom, revisions: [stage1-step1272000, stage1-step1413814]}

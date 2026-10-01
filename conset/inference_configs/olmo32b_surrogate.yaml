@@ -1,0 +1,7 @@
+epoch: 1
+seeds: [17, 18, 19]
+gen_config_name: beam
+batch_size: 32
+datasets: [{dataset: triviaqa, beg: 5000, end: 9961}, {dataset: jeopardy, beg: 15000, end: 20000}]
+train_configs: ['lora_{dataset}_acc_lr2e-4_bs16_5k_ncand2']
+models: [{model_name: allenai/Olmo-3-1125-32B, train_revisions: [stage1-step66000, stage1-step131000, stage1-step197000], surrogate_revision: stage1-step197000, eval_revisions: [stage1-step197000, stage1-step262000, stage1-step328000, stage1-step590120, stage1-step656000]}]

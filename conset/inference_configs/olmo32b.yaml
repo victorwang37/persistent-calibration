@@ -1,0 +1,29 @@
+# Learned-confidence inference required for the OLMo 3 32B tables.
+model_name: allenai/Olmo-3-1125-32B
+epoch: 1
+gen_config_name: beam
+batch_size: 32
+seeds: &seeds [17, 18, 19]
+datasets:
+  - {dataset: triviaqa, beg: 5000, end: 9961}
+  - {dataset: jeopardy, beg: 15000, end: 20000}
+  - {dataset: bioasq, beg: 0, end: 2719}
+train_revisions: &train [stage1-step66000, stage1-step131000, stage1-step197000]
+eval_revisions: &oracle [stage1-step262000, stage1-step328000, stage1-step590120, stage1-step656000]
+adapters:
+  - &t1multi {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k, datasets: [triviaqa, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *t1multi, revisions: [stage1-step197000]}
+  - {<<: *t1multi, revisions: *oracle}
+  - {<<: *t1multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &t2multi {train_config: lora_triviaqa_acc_lr2e-4_bs16_5k_ncand2, datasets: [triviaqa, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *t2multi, revisions: [stage1-step197000]}
+  - {<<: *t2multi, revisions: *oracle}
+  - {<<: *t2multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &j1multi {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k, datasets: [jeopardy, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *j1multi, revisions: [stage1-step197000]}
+  - {<<: *j1multi, revisions: *oracle}
+  - {<<: *j1multi, revisions: *oracle, use_ckpt_respective_predictor: true}
+  - &j2multi {train_config: lora_jeopardy_acc_lr2e-4_bs16_5k_ncand2, datasets: [jeopardy, bioasq], revisions: *train, seeds: *seeds}
+  - {<<: *j2multi, revisions: [stage1-step197000]}
+  - {<<: *j2multi, revisions: *oracle}
+  - {<<: *j2multi, revisions: *oracle, use_ckpt_respective_predictor: true}

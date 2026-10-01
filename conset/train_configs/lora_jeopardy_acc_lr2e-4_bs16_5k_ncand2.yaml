@@ -1,0 +1,12 @@
+weight_type: lora
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.0
+
+dataset: [jeopardy]
+lr: 2.0e-4
+batch_size: 16
+train_ranges: ["0-5000"]
+n_epoch: 1
+
+n_max_cand: 2

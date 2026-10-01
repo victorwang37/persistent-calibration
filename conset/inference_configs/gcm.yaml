@@ -1,0 +1,24 @@
+# Public GCM predictions used by the GCM table and plot.
+gcm_model: Hanqix/GCM-Qwen3-8B-TriviaQA
+gcm_base_model: Qwen/Qwen3-8B
+gen_config_name: beam
+batch_size: 32
+olmo7_train_revisions: &olmo7_train [stage1-step141000, stage1-step283000, stage1-step424000]
+olmo7_eval_revisions: &olmo7_eval [stage1-step566000, stage1-step707000, stage1-step1272000, stage1-step1413814]
+olmo32_train_revisions: &olmo32_train [stage1-step66000, stage1-step131000, stage1-step197000]
+olmo32_eval_revisions: &olmo32_eval [stage1-step262000, stage1-step328000, stage1-step590120, stage1-step656000]
+marin_train_revisions: &marin_train [kestrel, ocelot, jellyfish]
+marin_eval_revisions: &marin_eval [phoenix, starling, deeper-starling]
+predictions:
+  - {model_name: allenai/Olmo-3-1025-7B, dataset: triviaqa, beg: 0, end: 5000, eval_revisions: *olmo7_train}
+  - {model_name: allenai/Olmo-3-1025-7B, dataset: triviaqa, beg: 5000, end: 9961, eval_revisions: *olmo7_eval}
+  - {model_name: allenai/Olmo-3-1025-7B, dataset: jeopardy, beg: 0, end: 5000, eval_revisions: *olmo7_train}
+  - {model_name: allenai/Olmo-3-1025-7B, dataset: jeopardy, beg: 15000, end: 20000, eval_revisions: *olmo7_eval}
+  - {model_name: allenai/Olmo-3-1125-32B, dataset: triviaqa, beg: 0, end: 5000, eval_revisions: *olmo32_train}
+  - {model_name: allenai/Olmo-3-1125-32B, dataset: triviaqa, beg: 5000, end: 9961, eval_revisions: *olmo32_eval}
+  - {model_name: allenai/Olmo-3-1125-32B, dataset: jeopardy, beg: 0, end: 5000, eval_revisions: *olmo32_train}
+  - {model_name: allenai/Olmo-3-1125-32B, dataset: jeopardy, beg: 15000, end: 20000, eval_revisions: *olmo32_eval}
+  - {model_name: marin-community/marin-8b-base, dataset: triviaqa, beg: 0, end: 5000, eval_revisions: *marin_train}
+  - {model_name: marin-community/marin-8b-base, dataset: triviaqa, beg: 5000, end: 9961, eval_revisions: *marin_eval}
+  - {model_name: marin-community/marin-8b-base, dataset: jeopardy, beg: 0, end: 5000, eval_revisions: *marin_train}
+  - {model_name: marin-community/marin-8b-base, dataset: jeopardy, beg: 15000, end: 20000, eval_revisions: *marin_eval}
